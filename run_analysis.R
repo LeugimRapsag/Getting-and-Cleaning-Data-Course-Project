@@ -1,4 +1,5 @@
 ##
+## run_analysis.R
 ## Prepare folder "data" to download files after set the working directoiry
 ##
 dataPath<-getwd()
@@ -61,8 +62,19 @@ data_labels = setdiff(colnames(data), id_labels)
 melt_data = melt(data, id = id_labels, measure.vars = data_labels)
 tidy_data = dcast(melt_data, subject + Activity_Label ~ variable, mean)
 ##
+## Appropriately labels the data set with descriptive variable names.
+##
+names(tidy_data)<-gsub("^t", "Time", names(tidy_data))
+names(tidy_data)<-gsub("^f", "Frequency", names(tidy_data))
+names(tidy_data)<-gsub("Acc", "Accelerometer", names(tidy_data))
+names(tidy_data)<-gsub("Gyro", "Gyroscope", names(tidy_data))
+names(tidy_data)<-gsub("Mag", "Magnitude", names(tidy_data))
+names(tidy_data)<-gsub("BodyBody", "Body", names(tidy_data))
+names(tidy_data)<-gsub("mean\\(\\)", "Mean", names(tidy_data))
+names(tidy_data)<-gsub("meanFreq\\(\\)", "Mean", names(tidy_data))
+names(tidy_data)<-gsub("std\\(\\)", "Std", names(tidy_data))
+##
 ## create file to upload.
 ##
 write.table(tidy_data, file = "./tidy_data.txt")
 ## end
- Edit submission
